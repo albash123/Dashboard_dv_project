@@ -247,6 +247,28 @@
         </div>
 
 
+        <!-- New Charts for Race, Marital Status, and Gender -->
+        <div class="row">
+            <div class="col-md-12 mb-4">
+                <div id="raceChart"></div>
+            </div>
+            <div class="col-md-12 mb-4">
+                <div id="maritalChart"></div>
+            </div>
+            <div class="col-md-12 mb-4">
+                <div id="genderChart"></div>
+            </div>
+        </div>
+
+
+        <!-- All Charts Combined -->
+        <div class="row">
+            <div class="col-md-12 mb-4">
+                <div id="combinedChart"></div>
+            </div>
+        </div>
+
+
     </div>
 
     <script>
@@ -361,8 +383,205 @@
                 });
             }
         });
+
+
+
+
+
+        function animateCount(id, target, duration = 1500) {
+            let start = 0;
+            const element = document.getElementById(id);
+            const stepTime = Math.abs(Math.floor(duration / target));
+            const timer = setInterval(() => {
+                start++;
+                element.textContent = start;
+                if (start >= target) {
+                    element.textContent = target;
+                    clearInterval(timer);
+                }
+            }, stepTime);
+        }
+
+        Papa.parse("adult_clean.csv", {
+            download: true,
+            header: true,
+            complete: function (results) {
+                const data = results.data.filter(row => row.age && row.income && row["hours_per_week"]);
+
+                const total = data.length;
+                const rich = data.filter(d => d.income.trim() === ">50K");
+                const avgHours = (data.reduce((sum, d) => sum + Number(d["hours_per_week"]), 0) / total).toFixed(1);
+
+                document.getElementById("totalCount").textContent = total;
+                animateCount("avgHours", Math.round(avgHours));
+                document.getElementById("richPct").textContent = ((rich.length / total) * 100).toFixed(2) + "%";
+
+                // Donut, Bar, Line, Scatter (unchanged)
+                // ... existing chart logic ...
+
+                // Race Chart
+                const raceIncome = {};
+                data.forEach(row => {
+                    const key = row.race;
+                    if (!raceIncome[key]) raceIncome[key] = { ">50K": 0, "<=50K": 0 };
+                    raceIncome[key][row.income] += 1;
+                });
+                const races = Object.keys(raceIncome);
+                Plotly.newPlot("raceChart", [
+                    {
+                        x: races,
+                        y: races.map(r => raceIncome[r][">50K"]),
+                        name: ">50K",
+                        type: "bar"
+                    },
+                    {
+                        x: races,
+                        y: races.map(r => raceIncome[r]["<=50K"]),
+                        name: "<=50K",
+                        type: "bar"
+                    }
+                ], {
+                    barmode: 'group',
+                    title: "Income by Race",
+                    xaxis: { title: "Race" },
+                    yaxis: { title: "Count" }
+                });
+
+                // Marital Status Chart
+                const maritalIncome = {};
+                data.forEach(row => {
+                    const key = row.marital_status;
+                    if (!maritalIncome[key]) maritalIncome[key] = { ">50K": 0, "<=50K": 0 };
+                    maritalIncome[key][row.income] += 1;
+                });
+                const maritalKeys = Object.keys(maritalIncome);
+                Plotly.newPlot("maritalChart", [
+                    {
+                        x: maritalKeys,
+                        y: maritalKeys.map(m => maritalIncome[m][">50K"]),
+                        name: ">50K",
+                        type: "bar"
+                    },
+                    {
+                        x: maritalKeys,
+                        y: maritalKeys.map(m => maritalIncome[m]["<=50K"]),
+                        name: "<=50K",
+                        type: "bar"
+                    }
+                ], {
+                    barmode: 'group',
+                    title: "Income by Marital Status",
+                    xaxis: { title: "Marital Status" },
+                    yaxis: { title: "Count" }
+                });
+
+                // Gender Chart
+                const genderIncome = {};
+                data.forEach(row => {
+                    const key = row.sex;
+                    if (!genderIncome[key]) genderIncome[key] = { ">50K": 0, "<=50K": 0 };
+                    genderIncome[key][row.income] += 1;
+                });
+                const genders = Object.keys(genderIncome);
+                Plotly.newPlot("genderChart", [
+                    {
+                        x: genders,
+                        y: genders.map(g => genderIncome[g][">50K"]),
+                        name: ">50K",
+                        type: "bar"
+                    },
+                    {
+                        x: genders,
+                        y: genders.map(g => genderIncome[g]["<=50K"]),
+                        name: "<=50K",
+                        type: "bar"
+                    }
+                ], {
+                    barmode: 'group',
+                    title: "Income by Gender",
+                    xaxis: { title: "Gender" },
+                    yaxis: { title: "Count" }
+                });
+            }
+        });
     </script>
 
+    <script>
+        function animateCount(id, target, duration = 1500) {
+            let start = 0;
+            const element = document.getElementById(id);
+            const stepTime = Math.abs(Math.floor(duration / target));
+            const timer = setInterval(() => {
+                start++;
+                element.textContent = start;
+                if (start >= target) {
+                    element.textContent = target;
+                    clearInterval(timer);
+                }
+            }, stepTime);
+        }
+
+        Papa.parse("adult_clean.csv", {
+            download: true,
+            header: true,
+            complete: function (results) {
+                const data = results.data.filter(row => row.age && row.income && row["hours_per_week"]);
+                const total = data.length;
+                const rich = data.filter(d => d.income.trim() === ">50K");
+                const avgHours = (data.reduce((sum, d) => sum + Number(d["hours_per_week"]), 0) / total).toFixed(1);
+                document.getElementById("totalCount").textContent = total;
+                animateCount("avgHours", Math.round(avgHours));
+                document.getElementById("richPct").textContent = ((rich.length / total) * 100).toFixed(2) + "%";
+
+                const categories = { "Race": {}, "Marital Status": {}, "Gender": {} };
+
+                data.forEach(row => {
+                    const race = row.race;
+                    const marital = row.marital_status;
+                    const gender = row.sex;
+
+                    if (!categories["Race"][race]) categories["Race"][race] = { ">50K": 0, "<=50K": 0 };
+                    if (!categories["Marital Status"][marital]) categories["Marital Status"][marital] = { ">50K": 0, "<=50K": 0 };
+                    if (!categories["Gender"][gender]) categories["Gender"][gender] = { ">50K": 0, "<=50K": 0 };
+
+                    categories["Race"][race][row.income] += 1;
+                    categories["Marital Status"][marital][row.income] += 1;
+                    categories["Gender"][gender][row.income] += 1;
+                });
+
+                const traces = [];
+                Object.entries(categories).forEach(([dimension, values], idx) => {
+                    const labels = Object.keys(values);
+                    const more = labels.map(k => values[k][">50K"]);
+                    const less = labels.map(k => values[k]["<=50K"]);
+
+                    traces.push({
+                        x: labels,
+                        y: more,
+                        type: 'bar',
+                        name: `>50K (${dimension})`,
+                        offsetgroup: idx
+                    });
+                    traces.push({
+                        x: labels,
+                        y: less,
+                        type: 'bar',
+                        name: `<=50K (${dimension})`,
+                        offsetgroup: idx,
+                        base: 0
+                    });
+                });
+
+                Plotly.newPlot("combinedChart", traces, {
+                    barmode: 'group',
+                    title: "Combined View: Income by Race, Marital Status, and Gender",
+                    xaxis: { title: "Groups" },
+                    yaxis: { title: "Count" },
+                    legend: { orientation: 'h', x: 0, y: -0.2 }
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>
