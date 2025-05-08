@@ -90,3 +90,63 @@ p {
   height: auto;
   transition: height 1s ease;
 }
+
+#msgBox {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.6s ease, max-height 0.6s ease;
+  margin-top: 1rem;
+}
+
+/* when we add .show, it becomes visible */
+#msgBox.show {
+  opacity: 1;
+  max-height: 200px; /* enough room for textarea */
+}
+
+textarea {
+  width: 100%;
+  height: 120px;
+  resize: vertical;
+}
+/*/* same glowing button style you already liked */
+.revealBtn {
+  position: relative;
+  margin: 1rem 0;
+  padding: 0.6rem 1.8rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #3c8ce7, #00eaff);
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: 0.25s ease;
+  box-shadow: 0 0 12px rgba(0, 234, 255, 0.6);
+}
+.revealBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 18px rgba(0, 234, 255, 0.8);
+}
+.revealBtn:active {
+  transform: scale(0.96);
+}
+
+.msgBox {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.55s ease, max-height 0.55s ease;
+}
+.msgBox.show {
+  opacity: 1;
+  max-height: 240px;
+}
+
+.msgBox p {
+  background: #1f1f1f;
+  color: #dfe7ef;
+  padding: 1rem;
+  border-radius: 8px;
+}

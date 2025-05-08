@@ -151,46 +151,116 @@
             </div>
         </div>
 
-        <!-- Charts -->
-        <div class="row">
-            <div class="col-md-12 mb-4">
+        <div class="container">
+            <!-- ① Donut block -->
+            <div class="chart-wrapper">
+                <button class="revealBtn" data-target="donutInfo">Quick Take away </button>
+                <div id="donutInfo" class="msgBox">
+                    <p>
+
+                        About 3 out of 4 people earn $50 K or less, and only 1 out of 4 earn more. Use that 75 / 25
+                        split as a reference—any group with over 25 % high earners is above average; below 25 % is below
+                        average.
+
+                    </p>
+                </div>
                 <div id="donutChart"></div>
             </div>
-            <div class="col-md-12 mb-4">
+
+            <!-- ② Bar block -->
+            <div class="chart-wrapper">
+                <button class="revealBtn" data-target="eduInfo">Quick Take away</button>
+                <div id="eduInfo" class="msgBox">
+                    <p>Income rises sharply with education. High-school grads and “some-college” are mostly low earners,
+                        while Bachelor’s and especially Master’s/Doctorate holders have far more people above $50 K. In
+                        other words, finishing a full degree—particularly an advanced one—greatly improves your odds of
+                        higher income..</p>
+                </div>
                 <div id="barChart"></div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12 mb-4">
+
+            <!-- ③ Line block -->
+            <div class="chart-wrapper">
+                <button class="revealBtn" data-target="ageInfo">Quick Takeaway</button>
+                <div id="ageInfo" class="msgBox">
+                    <p>The chance of earning over $50 K starts near zero in the teens, climbs steadily through the 20s,
+                        peaks around ages 40–50 (roughly 40 % of people in that range cross the mark), then declines
+                        after the mid-50s. Income upside is highest in mid-career and tapers off toward retirement.</p>
+                </div>
                 <div id="lineChart"></div>
             </div>
-            <div class="col-md-12 mb-4">
+
+            <!-- ④ Scatter block -->
+            <div class="chart-wrapper">
+                <button class="revealBtn" data-target="scatterInfo"> Quick Takeaway</button>
+                <div id="scatterInfo" class="msgBox">
+                    <p>People of all ages cluster around 40 hours a week, but working longer hours doesn’t guarantee
+                        higher pay—most red points (≤ $50 K) still appear even above 50 hours. Green points (> $50 K)
+                        are more common between ages 30-55 and 40-60 hours, yet plenty of low earners work just as much.
+                        Effort alone isn’t a sure path to higher income.</p>
+                </div>
                 <div id="scatterPlot"></div>
             </div>
-        </div>
 
-
-        <!-- New Charts for Race, Marital Status, and Gender -->
-        <div class="row">
-            <div class="col-md-12 mb-4">
+            <!-- ⑤ Race block -->
+            <div class="chart-wrapper">
+                <button class="revealBtn" data-target="raceInfo">Quick Takeaway</button>
+                <div id="raceInfo" class="msgBox">
+                    <p>Most of the dataset is White, and within that group only about one in four reach the > $50 K
+                        bracket. High-income counts for Black, Asian-Pacific, Native-American, and “Other” races are
+                        much smaller—both in absolute terms and as a share of their own groups—highlighting a clear
+                        racial gap in earnings within this data.</p>
+                </div>
                 <div id="raceChart"></div>
             </div>
-            <div class="col-md-12 mb-4">
+
+            <!-- ⑥ Marital block -->
+            <div class="chart-wrapper">
+                <button class="revealBtn" data-target="maritalInfo">Quick Takeaway</button>
+                <div id="maritalInfo" class="msgBox">
+                    <p>Married people living with their spouse are far more likely to be high-income: their blue bar
+                        almost rivals their orange bar. In contrast, the never-married, divorced, widowed, or separated
+                        groups are dominated by the low-income orange bars. Marriage with a present spouse appears
+                        linked to better earnings in this data.</p>
+                </div>
                 <div id="maritalChart"></div>
             </div>
-            <div class="col-md-12 mb-4">
+
+            <!-- ⑦ Gender block -->
+            <div class="chart-wrapper">
+                <button class="revealBtn" data-target="genderInfo">Quick Takeaway</button>
+                <div id="genderInfo" class="msgBox">
+                    <p>Males are noticeably more represented in the >$50 K bracket than females, while both genders have
+                        large counts in the ≤ $50 K group. This highlights a gender pay gap in the dataset—men reach
+                        higher-income status more often than women.</p>
+                </div>
                 <div id="genderChart"></div>
             </div>
-        </div>
 
-
-        <!-- All Charts Combined -->
-        <div class="row">
-            <div class="col-md-12 mb-4">
+            <!-- ⑧ Combined -->
+            <div class="chart-wrapper">
+                <button class="revealBtn" data-target="comboInfo">Quick Takeaway</button>
+                <div id="comboInfo" class="msgBox">
+                    <p>This combined chart lines up race, marital status, and gender in one view. Across all three
+                        dimensions, the ≤ $50 K bars dominate, but patterns emerge: married-with-spouse groups stand out
+                        with more high-income counts than other marital states; males out-earn females; and within race,
+                        Whites show the largest absolute number of high earners, though low-income counts still vastly
+                        outweigh them. In one glance you can spot which demographic segments beat—or trail—the overall
+                        income baseline.</p>
+                </div>
                 <div id="combinedChart"></div>
             </div>
         </div>
 
+        <!-- Script: button toggles -->
+        <script>
+            document.querySelectorAll('.revealBtn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const box = document.getElementById(btn.dataset.target);
+                    box && box.classList.toggle('show');
+                });
+            });
+        </script>
 
     </div>
 
